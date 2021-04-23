@@ -14,7 +14,7 @@ function getUID() {
 }
 
 async function getPhotoFromUnsplash(dest) {
-  const API = `https://api.unsplash.com/search/photos/?client_id=${UNSPLASH_API_KEY}&query=${dest}&page=1&per_page=1`;
+  const API = `https://api.unsplash.com/search/photos/?client_id=${process.env.UNSPLASH_API_KEY}&query=${dest}&page=1&per_page=1`;
 
   const res = await axios.get(API);
 
