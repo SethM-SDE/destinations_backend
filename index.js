@@ -27,7 +27,6 @@ const { db } = require("./Database");
 
 // GET / => db  : READ operation
 server.get("/", (req, res) => {
-  console.log("test");
   res.send(db);
 });
 
@@ -60,5 +59,42 @@ server.post("/", async (req, res) => {
 
 // PUT  /?uid
 // expect {name, location, description?}
+server.put("/", async (req, res) => {
+  const { uid } = req.query;
 
+  if (!uid || uid.toString().length !== 6)
+    return res.status(400).json({ error: "uid is a required 6 digit number" });
+
+  const { name, location, description } = req.body;
+
+  if (!name && !location && !description) {
+    return res
+      .status(400)
+      .json({ error: "at least one property must be provided to update" });
+  }
+
+  const edit = db.find((dest) => dest.uid === uid);
+  if (edit === undefined) return res.status("uid not found");
+  if (name) {
+    edit.name = name;
+    edit.photo = await getPhoto(edit.name);
+  }
+  edit.location = location || edit.location;
+  edit.description = description || edit.location;
+
+  res.send(db);
+});
 // DELETE /?uid
+server.delete("/", (req, res) => {
+  const { uid } = req.query;
+
+  if (!uid || uid.toString().length !== 6)
+    return res.status(400).json({ error: "uid is a required 6 digit number" });
+
+  const del = db.find((dest) => dest.uid === uid);
+  if (del === undefined) return res.status("uid not found");
+  const idx = db.indexOf(del);
+  db.splice(idx, 1);
+
+  res.send(db);
+});
