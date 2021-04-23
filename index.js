@@ -27,7 +27,14 @@ const { db } = require("./Database");
 
 // GET / => db  : READ operation
 server.get("/", (req, res) => {
-  res.send(db);
+  const { location } = req.params;
+  
+  if (!location) return res.send(db);
+  
+  const locations = db.filter((dest) => dest.location.toLowerCase() === location.toLowerCase());
+  
+  return res.send(locations);
+  
 });
 
 // POST /
