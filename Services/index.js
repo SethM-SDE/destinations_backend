@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
-if(!process.env.PORT) {
-  require("../Secrets")
+if (!process.env.PORT) {
+  require("../Secrets");
 }
 
 function getUID() {
