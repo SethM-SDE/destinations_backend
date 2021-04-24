@@ -60,8 +60,8 @@ server.post("/", async (req, res) => {
     location,
     description: description || "",
   });
-
-  res.send(db[db.length - 1]);
+  res.redirect("/")
+  //res.send(db[db.length - 1]);
 });
 
 // PUT  /?uid
